@@ -8,7 +8,7 @@
 // npm i readline-sync
 //const prompt = require(" readline-sync");
 
-//Validação de entrada dos dados nos itens Editar, Remover, Obter via ID;
+//Validação de entrada dos dados nos itens Editar, Remover, Obter via ID; - OK
 //voltar (optcional)
 
 const readlineSync = require('readline-sync');
@@ -51,6 +51,8 @@ O que você gostaria de fazer?
             const idEditar = parseInt(readlineSync.question('Digite o ID da tarefa que deseja editar: '));
             if (isNaN(idEditar)) {
                 console.log('\nID inválido. Deve ser um número.');
+            } else if (!tarefas.some(tarefa => tarefa.id === idEditar)) {
+                console.log('Tarefa não encontrada.\n');
             } else {
                 const novaDescricao = readlineSync.question('Digite a nova descrição da tarefa: ');
                 editarTarefa(idEditar, novaDescricao);
@@ -63,6 +65,8 @@ O que você gostaria de fazer?
             const idRemover = parseInt(readlineSync.question('Digite o ID da tarefa que deseja remover: '));
             if (isNaN(idRemover)) {
                 console.log('\nID inválido. Deve ser um número.');
+            } else if (!tarefas.some(tarefa => tarefa.id === idRemover)) {
+                console.log('Tarefa não encontrada.\n');
             } else {
                 removerTarefa(idRemover);
             }
@@ -71,6 +75,8 @@ O que você gostaria de fazer?
             const idBuscar = parseInt(readlineSync.question('Digite o ID da tarefa que deseja buscar: '));
             if (isNaN(idBuscar)) {
                 console.log('\nID inválido. Deve ser um número.');
+            } else if (!tarefas.some(tarefa => tarefa.id === idBuscar)) {
+                console.log('Tarefa não encontrada.\n');
             } else {
                 obterTarefa(idBuscar);
             }
