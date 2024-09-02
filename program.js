@@ -16,7 +16,14 @@ const readlineSync = require("readline-sync");
 let tarefas = [];
 
 function gerarId() {
-  return Math.floor(Math.random() * Date.now());
+  // return Math.floor(Math.random() * Date.now());
+  let id = 1;
+	if (tarefas.length > 0) {
+		let ultimaTarefa = tarefas.length - 1;
+		id = tarefas[ultimaTarefa].id + 1;
+    return id;
+	}
+	return id;
 }
 
 function adicionarTarefa(descricao) {
@@ -41,6 +48,16 @@ function listarTarefas() {
   tarefas.forEach((item) => {
     console.table(item);
   });
+}
+
+function removerTarefa(id) {
+  if (tarefas.length > 0) {
+    let tarefaRemovida = tarefas.splice(id, 1);
+    console.log("Tarefa removida com sucesso!");
+    tarefaRemovida.forEach((tarefa) => console.log(tarefa));
+  } else {
+    console.log("Lista de tarefas vazia!");
+  }
 }
 
 function menu() {
@@ -83,12 +100,13 @@ O que você gostaria de fazer?
       const idRemover = parseInt(
         readlineSync.question("Digite o ID da tarefa que deseja remover: ")
       );
+      const index = tarefas.findIndex((tarefa) => tarefa.id === idRemover);
       if (isNaN(idRemover)) {
         console.log("\nID inválido. Deve ser um número.");
-      } else if (!tarefas.some((tarefa) => tarefa.id === idRemover)) {
+      } else if (index === -1) {
         console.log("Tarefa não encontrada.\n");
       } else {
-        removerTarefa(idRemover);
+        removerTarefa(index);
       }
       break;
     case "5":
