@@ -13,17 +13,16 @@
 
 const readlineSync = require("readline-sync");
 
-let tarefas = [];
+const tarefas = [];
 
 function gerarId() {
-  // return Math.floor(Math.random() * Date.now());
   let id = 1;
-	if (tarefas.length > 0) {
-		let ultimaTarefa = tarefas.length - 1;
-		id = tarefas[ultimaTarefa].id + 1;
+  if (tarefas.length > 0) {
+    let ultimaTarefa = tarefas.length - 1;
+    id = tarefas[ultimaTarefa].id + 1;
     return id;
-	}
-	return id;
+  }
+  return id;
 }
 
 function adicionarTarefa(descricao) {
@@ -33,8 +32,9 @@ function adicionarTarefa(descricao) {
   };
   tarefas.push(tarefa);
   console.log("\nTarefa adicionada com sucesso!");
-  console.log(tarefa);
+  console.log(`ID: ${tarefa.id} e Descricao: ${tarefa.descricao}`);
 }
+
 function editarTarefa(idEditar, novaDescricao) {
   const index = tarefas.findIndex((item) => {
     return item.id === idEditar;
@@ -42,6 +42,7 @@ function editarTarefa(idEditar, novaDescricao) {
   tarefas[index].descricao = novaDescricao;
   console.log(tarefas);
 }
+
 function listarTarefas() {
   console.log("Listagem de tarefas:  ");
 
@@ -53,10 +54,30 @@ function listarTarefas() {
 function removerTarefa(id) {
   if (tarefas.length > 0) {
     let tarefaRemovida = tarefas.splice(id, 1);
+    console.log(`A tarefa removida foi: ${tarefaRemovida[0].descricao}`);
+
     console.log("Tarefa removida com sucesso!");
-    tarefaRemovida.forEach((tarefa) => console.log(tarefa));
+
+    const attId = tarefas.map((tarefa) => {
+      return {
+        id: tarefa.id - 1,
+        descricao: tarefa.descricao,
+      };
+    });
+
+    tarefas.splice(0, tarefas.length, ...attId);
+  }
+}
+
+function obterTarefa(idBuscar) {
+  if (tarefas.length === 1) {
+    return console.log(
+      `Descricao da tarefa selecionada: ${tarefas[0].descricao}`
+    );
   } else {
-    console.log("Lista de tarefas vazia!");
+    return console.log(
+      `Descricao da tarefa selecionada: ${tarefas[--idBuscar].descricao}`
+    );
   }
 }
 
