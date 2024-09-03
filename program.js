@@ -16,13 +16,7 @@ const readlineSync = require("readline-sync");
 const tarefas = [];
 
 function gerarId() {
-  let id = 1;
-  if (tarefas.length > 0) {
-    let ultimaTarefa = tarefas.length - 1;
-    id = tarefas[ultimaTarefa].id + 1;
-    return id;
-  }
-  return id;
+  return (tarefas.length > 0) ? tarefas[tarefas.length - 1].id + 1 : 1;
 }
 
 function adicionarTarefa(descricao) {
