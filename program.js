@@ -16,13 +16,7 @@ const readlineSync = require("readline-sync");
 const tarefas = [];
 
 function gerarId() {
-  let id = 1;
-  if (tarefas.length > 0) {
-    let ultimaTarefa = tarefas.length - 1;
-    id = tarefas[ultimaTarefa].id + 1;
-    return id;
-  }
-  return id;
+  return (tarefas.length > 0) ? tarefas[tarefas.length - 1].id + 1 : 1;
 }
 
 function adicionarTarefa(descricao) {
@@ -60,18 +54,9 @@ function listarTarefas() {
 function removerTarefa(id) {
   if (tarefas.length > 0) {
     let tarefaRemovida = tarefas.splice(id, 1);
-    console.log(`A tarefa removida foi: ${tarefaRemovida[0].descricao}`);
-
-    console.log("Tarefa removida com sucesso!");
-
-    const attId = tarefas.map((tarefa) => {
-      return {
-        id: tarefa.id - 1,
-        descricao: tarefa.descricao,
-      };
-    });
-
-    tarefas.splice(0, tarefas.length, ...attId);
+    console.log(
+			`\nA tarefa "${tarefaRemovida[0].descricao.toUpperCase()}" foi removida com sucesso!`
+		);
   }
 }
 
@@ -131,7 +116,7 @@ O que você gostaria de fazer?
       if (isNaN(idRemover)) {
         console.log("\nID inválido. Deve ser um número.");
       } else if (index === -1) {
-        console.log("Tarefa não encontrada.\n");
+        console.log("\nTarefa não encontrada.");
       } else {
         removerTarefa(index);
       }
