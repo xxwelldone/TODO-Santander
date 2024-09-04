@@ -16,7 +16,7 @@ const readlineSync = require("readline-sync");
 const tarefas = [];
 
 function gerarId() {
-  return (tarefas.length > 0) ? tarefas[tarefas.length - 1].id + 1 : 1;
+  return tarefas.length > 0 ? tarefas[tarefas.length - 1].id + 1 : 1;
 }
 
 function adicionarTarefa(descricao) {
@@ -39,13 +39,15 @@ function editarTarefa(idEditar, novaDescricao) {
 
 function listarTarefas() {
   console.log("Listagem de tarefas:  ");
-
-  tarefas.forEach((item) => {
-    console.table(item);
-  });
+  if (tarefas.length < 1) {
+    console.log("\nNão há tarefas cadastradas.\n");
+  } else {
+    tarefas.forEach((item) => {
+      console.table(item);
+    });
+  }
 }
-//TODO: Mensagem caso não tenha tarefas -> Wesley
-//TODO: Responsabilidade de verificações do Switch -> Wesley
+
 //TODO: Verificar possibilidades diferentes de table -> Daniel
 //TODO: Remover atualização de ID; -> Yasmin
 //TODO: Verificar se há itens antes de entrar em remover -> Yasmin
@@ -55,8 +57,8 @@ function removerTarefa(id) {
   if (tarefas.length > 0) {
     let tarefaRemovida = tarefas.splice(id, 1);
     console.log(
-			`\nA tarefa "${tarefaRemovida[0].descricao.toUpperCase()}" foi removida com sucesso!`
-		);
+      `\nA tarefa "${tarefaRemovida[0].descricao.toUpperCase()}" foi removida com sucesso!`
+    );
   }
 }
 
@@ -70,6 +72,22 @@ function obterTarefa(idBuscar) {
       `Descricao da tarefa selecionada: ${tarefas[--idBuscar].descricao}`
     );
   }
+}
+//** Funções auxiliares
+function validarId(msg) {
+  const id = Number(readlineSync.question(msg));
+  if (isNaN(id)) {
+    console.log("\nID inválido. Deve ser um número.");
+    return null;
+  }
+  return id;
+}
+function tarefaExiste(id) {
+  if (tarefas.some((tarefa) => tarefa.id === id)) {
+    return true;
+  }
+  console.log("\nTarefa não encontrada.\n");
+  return false;
 }
 
 function menu() {
@@ -91,48 +109,34 @@ O que você gostaria de fazer?
       adicionarTarefa(descricao);
       break;
     case "2":
-      const idEditar = parseInt(
-        readlineSync.question("Digite o ID da tarefa que deseja editar: ")
-      );
-      if (isNaN(idEditar)) {
-        console.log("\nID inválido. Deve ser um número.");
-      } else if (!tarefas.some((tarefa) => tarefa.id === idEditar)) {
-        console.log("Tarefa não encontrada.\n");
-      } else {
+      const idEditar = validarId("Digite o ID da tarefa que deseja editar: ");
+
+      if (idEditar !== null && tarefaExiste(idEditar)) {
         const novaDescricao = readlineSync.question(
           "Digite a nova descrição da tarefa: "
         );
         editarTarefa(idEditar, novaDescricao);
       }
+
       break;
     case "3":
       listarTarefas();
       break;
     case "4":
-      const idRemover = parseInt(
-        readlineSync.question("Digite o ID da tarefa que deseja remover: ")
-      );
-      const index = tarefas.findIndex((tarefa) => tarefa.id === idRemover);
-      if (isNaN(idRemover)) {
-        console.log("\nID inválido. Deve ser um número.");
-      } else if (index === -1) {
-        console.log("\nTarefa não encontrada.");
-      } else {
+      const idRemover = validarId("Digite o ID da tarefa que deseja remover: ");
+      if (idRemover !== null && tarefaExiste(idRemover)) {
+        const index = tarefas.findIndex((tarefa) => tarefa.id === idRemover);
         removerTarefa(index);
       }
       break;
+
     case "5":
-      const idBuscar = parseInt(
-        readlineSync.question("Digite o ID da tarefa que deseja buscar: ")
-      );
-      if (isNaN(idBuscar)) {
-        console.log("\nID inválido. Deve ser um número.");
-      } else if (!tarefas.some((tarefa) => tarefa.id === idBuscar)) {
-        console.log("Tarefa não encontrada.\n");
-      } else {
+      const idBuscar = validarId("Digite o ID da tarefa que deseja buscar: ");
+      if (idBuscar !== null && tarefaExiste(idBuscar)) {
         obterTarefa(idBuscar);
       }
       break;
+
     case "6":
       console.log("\nSaindo da aplicação. Até logo!");
       process.exit(0);
