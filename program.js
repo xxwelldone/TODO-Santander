@@ -19,7 +19,7 @@ function gerarId() {
 function adicionarTarefa(descricao) {
   const tarefa = {
     id: gerarId(),
-    descricao: descricao,
+    descricao: descricao.toUpperCase(),
   };
   tarefas.push(tarefa);
   console.log("\nTarefa adicionada com sucesso!");
@@ -35,7 +35,9 @@ function editarTarefa(idEditar, novaDescricao) {
 function listarTarefas() {
   console.log("Listagem de tarefas: ");
   tarefas.forEach((item) => {
-    console.table(item);
+    console.log("+---------------------+");
+    console.log(`ID: ${item.id} Descrição: ${item.descricao}`);
+    console.log("+---------------------+");
   });
 }
 
@@ -43,20 +45,15 @@ function removerTarefa(idRemover) {
   const index = tarefas.findIndex((tarefa) => tarefa.id === idRemover);
   const tarefaRemovida = tarefas.splice(index, 1);
   console.log(
-    `\nA tarefa com o ID ${idRemover} - "${tarefaRemovida[0].descricao.toUpperCase()}", foi removida com sucesso!`
+    `\nA tarefa com o ID ${idRemover} - "${tarefaRemovida[0].descricao}", foi removida com sucesso!`
   );
 }
 
 function obterTarefa(idBuscar) {
-  if (tarefas.length === 1) {
-    return console.log(
-      `\nDescricao da tarefa selecionada: ${tarefas[0].descricao}`
-    );
-  } else {
-    return console.log(
-      `\nDescricao da tarefa selecionada: ${tarefas[--idBuscar].descricao}`
-    );
-  }
+  const tarefa = tarefas.find((tarefa) => tarefa.id === idBuscar);
+  console.log(
+    `\nUma tarefa foi encontrada \n ID: ${tarefa.id} e descrição: ${tarefa.descricao}`
+  );
 }
 
 function adicionarNovamente() {
