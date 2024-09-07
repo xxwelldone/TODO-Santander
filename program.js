@@ -13,20 +13,20 @@ function adicionarTarefa(descricao) {
   };
   tarefas.push(tarefa);
   console.log("\nTarefa adicionada com sucesso!");
-  console.log(`ID: ${tarefa.id} - Descricao: ${tarefa.descricao}`);
+  console.log(`ID: ${tarefa.id} - Descrição: ${tarefa.descricao}`);
 }
 
 function editarTarefa(idEditar, novaDescricao) {
   const index = tarefas.findIndex((item) => item.id === idEditar);
-  tarefas[index].descricao = novaDescricao;
-  console.log(tarefas[index]);
+  tarefas[index].descricao = novaDescricao.toUpperCase();
+  console.log(`\nTarefa atualizada => ID: ${tarefas[index].id} - Descrição: ${tarefas[index].descricao}`);
 }
 
 function listarTarefas() {
   console.log("Listagem de tarefas: ");
   tarefas.forEach((item) => {
     console.log("+---------------------+");
-    console.log(`ID: ${item.id} Descrição: ${item.descricao}`);
+    console.log(`ID: ${item.id} - Descrição: ${item.descricao}`);
     console.log("+---------------------+");
   });
 }
@@ -35,14 +35,14 @@ function removerTarefa(idRemover) {
   const index = tarefas.findIndex((tarefa) => tarefa.id === idRemover);
   const tarefaRemovida = tarefas.splice(index, 1);
   console.log(
-    `\nA tarefa com o ID ${idRemover} - "${tarefaRemovida[0].descricao}", foi removida com sucesso!`
+    `\nA tarefa com o ID: ${idRemover} - "${tarefaRemovida[0].descricao}", foi removida com sucesso!`
   );
 }
 
 function obterTarefa(idBuscar) {
   const tarefa = tarefas.find((tarefa) => tarefa.id === idBuscar);
   console.log(
-    `\nUma tarefa foi encontrada \n ID: ${tarefa.id} e descrição: ${tarefa.descricao}`
+    `\nUma tarefa foi encontrada => ID: ${tarefa.id} - Descrição: ${tarefa.descricao}`
   );
 }
 
@@ -59,8 +59,6 @@ function adicionarNovamente() {
 function editarNovamente() {
   criarLoop(() => {
     const idEditar = validarId("\nDigite o ID da tarefa que deseja editar: ");
-    console.log(tarefaExiste(idEditar));
-
     if (idEditar !== null && tarefaExiste(idEditar)) {
       obterTarefa(idEditar);
       const novaDescricao = readlineSync.question(
