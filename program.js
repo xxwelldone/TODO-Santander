@@ -1,13 +1,3 @@
-// 1 - Adicionar; => e menu (Lucas) - OK
-// 2 - Editar; => wesley - OK
-// 3 - Remover; => Yasmin - OK
-// 4 - Listar todos; => wesley - OK
-// 5 - Obter via ID; => Daniel - OK
-// 6 - Sair => lucas - OK
-//Validação de entrada dos dados nos itens Editar, Remover, Obter via ID; - OK
-//voltar (optcional) - OK
-//TODO: Verificar possibilidades diferentes de table -> Daniel
-
 const readlineSync = require("readline-sync");
 
 const tarefas = [];
@@ -158,10 +148,14 @@ function verificarDescricaoVazia(descricao) {
 }
 
 function verificarTarefasCadastradas(funcao) {
-  if (tarefas.length > 0) {
-    funcao();
-  } else {
-    console.log("\nNão há tarefas cadastradas.");
+  try {
+    if (tarefas.length > 0) {
+      funcao();
+    } else {
+      console.log("\nNão há tarefas cadastradas");
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
